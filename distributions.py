@@ -128,3 +128,23 @@ class Poisson(BaseDistribution):
 
     def theoretical_variance(self):
         return self.lam
+
+
+class Exponential(BaseDistribution):
+    def __init__(self, engine, lam):
+        super().__init__(engine)
+
+        if lam <= 0:
+            raise ValueError("λ must be positive.")
+        self.lam = lam
+
+    def generate_sample(self):
+        u = self.engine.create()
+        return -math.log(u) / self.lam
+
+    def theoretical_mean(self):
+        return 1 / self.lam
+
+    def theoretical_variance(self):
+        return 1 / (self.lam**2)
+
