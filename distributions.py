@@ -148,3 +148,30 @@ class Exponential(BaseDistribution):
     def theoretical_variance(self):
         return 1 / (self.lam**2)
 
+
+class Normal(BaseDistribution):
+    def __init__(self, engine, mu, sigma):
+        super().__init__(engine)
+        self.mu = mu
+
+        if sigma <= 0:
+            raise ValueError("σ must be positive.")
+        self.sigma = sigma
+
+    def generate_sample(self):
+        u1 = self.engine.create()
+        u2 = self.engine.create()
+
+        z = math.sqrt(-2 * math.log(u1)) * math.cos(2 * math.pi * u2)
+
+        return self.mu + self.sigma * z
+
+    def theoretical_mean(self):
+        return self.mu
+
+    def theoretical_variance(self):
+        return self.sigma**2
+
+    @staticmethod
+    def standard_cdf(z):
+        return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
