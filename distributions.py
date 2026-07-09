@@ -74,3 +74,29 @@ class Binomial(BaseDistribution):
     def theoretical_variance(self):
         return self.n * self.p * (1 - self.p)
 
+
+class Geometric(BaseDistribution):
+    def __init__(self, engine, p):
+        super().__init__(engine)
+
+        if 0 <= p <= 1:
+            self.p = p
+        else:
+            raise ValueError("The probability must be between 0 and 1.")
+
+        self.bernoulli = Bernoulli(self.engine, self.p)
+
+    def generate_sample(self):
+        cnt, u = 0, 0
+
+        while u != 1:
+            u = self.bernoulli.generate_sample()
+            cnt += 1
+
+        return cnt
+
+    def theoretical_mean(self):
+        return 1 / self.p
+
+    def theoretical_variance(self):
+        return (1 - self.p) / (self.p**2)
