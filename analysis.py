@@ -31,3 +31,24 @@ def empirical_variance(samples):
 
 def percent_error(theorical, empirical):
     return abs((theorical - empirical) / theorical) * 100
+
+
+def build_report(dist_name, params, M, samples, distribution):
+    mean_emp = empirical_mean(samples)
+    var_emp = empirical_variance(samples)
+    mean_theo = distribution.theoretical_mean()
+    var_theo = distribution.theoretical_variance()
+    err_mean = percent_error(mean_theo, mean_emp)
+    err_var = percent_error(var_theo, var_emp)
+
+    return {
+        "Distribution name": dist_name,
+        "Params": params,
+        "M": M,
+        "Mean empirical": mean_emp,
+        "Variance empirical": var_emp,
+        "Mean theoretical": mean_theo,
+        "Variance theoretical": var_theo,
+        "Error mean percent": err_mean,
+        "Error variance percent": err_var,
+    }
