@@ -61,3 +61,14 @@ def binomial_normal_approximation(samples, n, p, a, b):
 
     return {"Probability Empirical": p_empirical, "Probablity Normal": p_normal, "Difference": difference}
 
+
+def poisson_normal_approximation(samples, lam, a, b):
+    p_empirical = empirical_range_probability(samples, a, b)
+
+    mu = lam
+    sigma = math.sqrt(lam)
+    p_normal = normal_range_probability_with_continuity(mu, sigma, a, b)
+
+    difference = abs(p_empirical - p_normal)
+
+    return {"Probability Empirical": p_empirical, "Probablity Normal": p_normal, "Difference": difference}
