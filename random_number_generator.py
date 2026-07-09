@@ -40,3 +40,28 @@ class XorShift(RandomNumberGenerator):
         self.x ^= (self.x << 5)
 
         return (self.x & self.mask) / self.mask
+
+def compare_engines(simple_size):
+    t0 = time.time()
+    lcg = LinearCongruentialGenerator()
+
+    for _ in range(simple_size):
+        print(lcg.create())
+    
+    delta_t1 = time.time() - t0
+    
+    print(f"\n\nTime spent in LCG: {delta_t1}")
+    
+    print()
+    print("=" * 50)
+    print()
+    
+    t0 = time.time()
+    xs = XorShift()
+    
+    for _ in range(simple_size):
+        print(xs.create())
+    
+    delta_t2 = time.time() - t0
+    
+    print(f"\n\nTime spent in XorShift: {delta_t2}")
