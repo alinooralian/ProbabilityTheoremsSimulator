@@ -100,3 +100,31 @@ class Geometric(BaseDistribution):
 
     def theoretical_variance(self):
         return (1 - self.p) / (self.p**2)
+
+
+class Poisson(BaseDistribution):
+    def __init__(self, engine, lam):
+        super().__init__(engine)
+        
+        if lam <= 0:
+            raise ValueError("λ must be positive.")
+        self.lam = lam
+
+    def generate_sample(self):
+        threshold = math.exp(-self.lam)
+
+        cnt = 0
+        p = 1.0
+
+        while p > threshold:
+            u = self.engine.create()
+            p *= u
+            cnt += 1
+
+        return cnt - 1
+
+    def theoretical_mean(self):
+        return self.lam
+
+    def theoretical_variance(self):
+        return self.lam
